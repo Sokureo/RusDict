@@ -1,0 +1,73 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Словарь русского языка XI&ndash;XVII веков</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles/style.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+{# <style type="text/css">
+   button.new {
+    background: white;
+    border: 0px;
+	text-align: left;
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	cursor:pointer;
+	font-size: 13pt;
+	font-style: italic;
+   }
+  </style> #}
+</head>
+<body>
+<div class="page-wrap">
+<div id="head">
+<table width="100%" id="id2">
+<tr>
+<td width="15%" style="vertical-align: top;">
+<center><a href="./"><img src="{{ url_for('static', filename='inter_logo.png') }}" width=100></a></center>
+</td>
+<td style="vertical-align: top; padding-top: 40px;">
+<font size=6,5>Словарь русского языка XI&ndash;XVII веков</font>
+<sub><i>Beta</i></sub>
+
+</td>
+<td style="vertical-align: top;">
+
+</td>
+</tr>
+</table>
+</div>
+<div id="menu">
+<a href="{{ url_for('dictionary') }}"><font color="white">Поиск по словарю</font> </a> &nbsp; &nbsp;<a href="{{ url_for('source') }}"><font color="white"> Поиск по списку источников </font></a> &nbsp; &nbsp;
+<a href="{{ url_for('lists') }}"><font color="white">Список заголовочных форм</font> </a></div>
+<div id="main">
+<div id="up"><b>{{ entry['lemma1'] }}</b></div>
+{% if entry['gram1'] != 'NULL' %}
+<i>
+<form id="form_id" action="{{ url_for('link_part_of_speech') }}" method=POST style="margin:0;">
+<input type=hidden name = "part_of_speech" value={{ entry['gram1'] }}>
+<button type="submit" class="new">{{ entry['gram1'] }}.</button> 
+</form>
+</i>
+{% endif %}
+{% if entry['lemma2'] != 'NULL' %} <b> {{ entry['lemma2'] }} </b> {% endif %}
+{% if entry['gram2'] != 'NULL' %}
+<form id="form_id" action="{{ url_for('link_part_of_speech') }}" method=POST style="margin:0;">
+<input type=hidden name = "part_of_speech" value={{ entry['gram2'] }}>
+<button type="submit" class="new">{{ entry['gram2'] }}.</button> 
+</form>
+{% endif %}
+{% for meaning in entry['meanings'] %}
+<p>
+<i>{{ meaning['meaning'] }}</i>
+{% for example in meaning['examples'] %}
+<p>{{ example[0] }}</p>
+{% endfor %}
+</p>
+{% endfor %}
+</div>
+</div>
+<div id="footer">
+<br>
+<center>Контакты:<br>saverussianlanguage@gmail.com<br><a href="https://github.com/AnnaVechkaeva/RusDict"><font color="white">Проект на GitHub</font></a></center>
+</div>
+</body>
+</html>

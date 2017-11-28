@@ -1,0 +1,101 @@
+<meta charset="utf-8">
+<title>Словарь русского языка XI - XVII веков</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles/style.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<body>
+<div class="page-wrap">
+<div id="head">
+<a href="./"><img src="{{ url_for('static', filename='head.png') }}"></a>
+</div>
+<div id="menu">
+<a href="./dict"><font color="white">Поиск по словарю</font> </a> &nbsp; &nbsp;<a href="./source"><font color="white"> Поиск по списку источников </font></a> <a href="./add"><font color="white">Добавить источник</font> </a>
+</div>
+<div id="main">
+<h1>Поиск по словарю</h1>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form action="{{ url_for('dictionary') }}" method=POST>
+<table width = 95%>
+<tr>
+<td width = 20%>Заголовочное слово</td>
+<td><input type=text name=word size = 120% style ="border-radius: 10px"></td>
+</tr>
+<tr>
+<td>Поиск по тексту статьи</td>
+<td><input type=text name=word_te size = 120% style ="border-radius: 10px">
+</td>
+</tr>
+<tr>
+<td>Часть речи</td>
+<td>
+
+<input type="checkbox" name="part_of_speech" value="м">существительное (мужской род) <br>
+<input type="checkbox" name="part_of_speech" value="ж">существительное (женский род)<br>
+<input type="checkbox" name="part_of_speech" value="с">существительное (средний род)<br>
+<input type="checkbox" name="part_of_speech" value="прил">прилагательное <br>
+<input type="checkbox" name="part_of_speech" value="глаг">глагол <br>
+<input type="checkbox" name="part_of_speech" value="нареч">наречие <br>
+<input type="checkbox" name="part_of_speech" value="союз">союз <br>
+<input type="checkbox" name="part_of_speech" value="числительное">числительное <br>
+<input type="checkbox" name="part_of_speech" value="частица">частица <br><br>
+<hr>
+</td>
+</tr>
+<tr>
+<td>
+Источники
+</td>
+<td>
+<input type="checkbox" name="tran" value="on">переводные <br>
+<input type="checkbox" name="tran" value="off">не переводные <br><br>
+<hr>
+</td>
+</tr>
+<tr>
+<td>Жанр источника</td>
+<td>
+<input type="checkbox" name="genre" value="biblia_apokrify">Библия, Апокрифы<br>
+<input type="checkbox" name="genre" value="bogoslovie">Богословие<br>
+<input type="checkbox" name="genre" value="agiografia">Агиография<br>
+<input type="checkbox" name="genre" value="povesti_belletristika">Повести и Беллетристика<br>
+<input type="checkbox" name="genre" value="liturgika">Литургика<br>
+<input type="checkbox" name="genre" value="epistolografia">Эпистолография<br>
+<input type="checkbox" name="genre" value="letopis">Летопись<br>
+<input type="checkbox" name="genre" value="hronika_hronografia">Хроника и Хронография<br>
+<input type="checkbox" name="genre" value="dokumenty">Документы<br>
+<br>
+<hr>
+</td>
+</tr>
+
+<tr>
+<td>Язык оригинала (для переводных)</td>
+<td>
+<input type="checkbox" name="language" value="греческий">греческий<br>
+<input type="checkbox" name="language" value="латынь">латынь<br>
+<input type="checkbox" name="language" value="немецкий">немецкий<br>
+<input type="checkbox" name="language" value="польский">польский<br>
+<input type="checkbox" name="language" value="чешский">чешский<br><br>
+<hr>
+</td>
+</tr>
+
+<tr>
+<td>Год</td>
+<td>
+<input name="year" style ="border-radius: 10px"> г.
+</td>
+</tr>
+
+
+<tr>
+<td></td>
+<td><br><input type=submit value=Искать style ="border-radius: 10px"> <input type=reset value=Очистить style ="border-radius: 10px"></td>
+</table>
+</form>
+</div>
+</div>
+<br>
+<div id="footer">
+f
+</div>
+</body>

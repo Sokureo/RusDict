@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Словарь русского языка XI&ndash;XVII веков</title>
+{# <style type="text/css">
+    .my-input {
+      font: bold 48px/1.5 cursive;
+      color: green;
+    }
+  </style> #}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='styles/style.css') }}">
+<link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+<div class="page-wrap">
+<div id="head">
+<table width="100%" id="id2">
+<tr>
+<td width="15%" style="vertical-align: top;">
+<center><a href="./"><img src="{{ url_for('static', filename='inter_logo.png') }}" width=100></a></center>
+</td>
+<td style="vertical-align: top; padding-top: 40px;">
+<font size=6,5>Словарь русского языка XI&ndash;XVII веков</font>
+<sub><i>Beta</i></sub>
+
+</td>
+<td style="vertical-align: top;">
+
+</td>
+</tr>
+</table>
+</div>
+<div id="menu">
+<a href="./dict"><font color="white">Поиск по словарю</font> </a> &nbsp; &nbsp;<a href="./source"><font color="white"> Поиск по списку источников </font></a> &nbsp; &nbsp;
+<a href="./lists"><font color="white">Список заголовочных форм</font> </a></div>
+<div id="main">
+  <h1>Поиск по словарю</h1>
+  {% if error %}<p class=error><strong>Error:</strong> {{ error }}{% endif %}
+  <form action="{{ url_for('dictionary') }}" method=POST>
+<table width = 95% id="id1">
+<tr>
+<td width = 20%>Поиск по заголовочному слову</td>
+<td><input type=text name=word size = 120% style ="border-radius: 10px" styles="font-size:11px; font-weight:bold;"/></td>
+</tr>
+<tr>
+
+<td width = 20%>Поиск по маске <sup>
+<span class="tooltip"><img src="{{ url_for('static', filename='question.png') }}" width=7><em>'_' - любой символ;<br> '%' - любое количество любых символов<i></i></em></span>
+</sup></td>
+<td><input  type=text name=word_m size = 120% style ="border-radius: 10px" styles="font-size:11px; font-weight:bold;"/></td>
+</tr>
+<tr>
+<td>Поиск по примерам</td>
+<td><input type=text name=word_te size = 120% style ="border-radius: 10px">
+</td>
+</tr>
+<tr>
+<td>Часть речи</td>
+<td>
+
+<input type="checkbox" name="part_of_speech" value="м">существительное (мужской род) <br>
+<input type="checkbox" name="part_of_speech" value="ж">существительное (женский род)<br>
+<input type="checkbox" name="part_of_speech" value="с">существительное (средний род)<br>
+<input type="checkbox" name="part_of_speech" value="прил">прилагательное <br>
+<input type="checkbox" name="part_of_speech" value="глаг">глагол <br>
+<input type="checkbox" name="part_of_speech" value="нареч">наречие <br>
+<input type="checkbox" name="part_of_speech" value="союз">союз <br>
+<input type="checkbox" name="part_of_speech" value="числительное">числительное <br>
+<input type="checkbox" name="part_of_speech" value="частица">частица <br>
+<input type="checkbox" name="part_of_speech" value="межд">междометие <br>
+<input type="checkbox" name="part_of_speech" value="мест">местоимение <br>
+<input type="checkbox" name="part_of_speech" value="предл">предлог <br><br>
+
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<h3>Поиск по источникам</h3>
+</td>
+<tr>
+<td>
+
+</td>
+<td>
+<input type="checkbox" name="tran" value="on">переводные <br>
+<input type="checkbox" name="tran" value="off">не переводные <br><br>
+<hr>
+</td>
+</tr>
+<tr>
+<td>Жанр источника</td>
+<td>
+<input type="checkbox" name="genre" value="biblia_apokrify">Библия и апокрифы<br>
+<input type="checkbox" name="genre" value="bogoslovie">Богословие<br>
+<input type="checkbox" name="genre" value="gomiletika">Гомилетика<br>
+<input type="checkbox" name="genre" value="agiografia">Агиография<br>
+<input type="checkbox" name="genre" value="povesti_belletristika">Повести и беллетристика<br>
+<input type="checkbox" name="genre" value="liturgika">Литургика<br>
+<input type="checkbox" name="genre" value="epistolografia">Эпистолография<br>
+<input type="checkbox" name="genre" value="letopis">Летопись<br>
+<input type="checkbox" name="genre" value="hronika_hronografia">Хроника и хронография<br>
+<input type="checkbox" name="genre" value="dokumenty">Документы<br>
+<br>
+<hr>
+</td>
+</tr>
+
+<tr>
+<td>Язык оригинала (для переводных)</td>
+<td>
+<input type="checkbox" name="language" value="греческий">греческий<br>
+<input type="checkbox" name="language" value="латынь">латынь<br>
+<input type="checkbox" name="language" value="немецкий">немецкий<br>
+<input type="checkbox" name="language" value="польский">польский<br>
+<input type="checkbox" name="language" value="чешский">чешский<br><br>
+<hr>
+</td>
+</tr>
+<tr>
+
+<td>Год</td>
+<td>
+<input type="text" name="year_1" style ="border-radius: 10px"> г.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; или интервал &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="year_1_1" style ="border-radius: 10px"> — <input type="text" name="year_1_2" style ="border-radius: 10px"> гг.
+</td>
+</tr>
+<tr>
+<td>Век</td>
+<td>
+<select multiple name="cent_1" style ="border-radius: 10px; width: 224" size=3>
+    <option value="11">XI</option>
+    <option value="12">XII</option>
+    <option value="13">XIII</option>
+    <option value="14">XIV</option>
+	<option value="15">XV</option>
+    <option value="16">XVI</option>
+    <option value="17">XVII</option>
+   </select>в. 
+   
+   
+</td>
+</tr>
+
+<tr>
+<td><br>Год первого упоминания</td>
+<td>
+
+<br>
+<input type="text" name="year_2" style ="border-radius: 10px"> г. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; или интервал&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="text" name="year_2_1" style ="border-radius: 10px"> — <input type="text" name="year_2_2" style ="border-radius: 10px"> гг.
+</td>
+</tr>
+<tr>
+<td>Век первого упоминания</td>
+<td>
+<select multiple name="cent_2" style ="border-radius: 10px; width: 224" size=3>
+    <option value="11">XI</option>
+    <option value="12">XII</option>
+    <option value="13">XIII</option>
+    <option value="14">XIV</option>
+	<option value="15">XV</option>
+    <option value="16">XVI</option>
+    <option value="17">XVII</option>
+   </select>
+   в. 
+</td>
+</tr>
+
+<tr>
+<td></td>
+<td><br><input type=submit value=Искать style ="border-radius: 10px"> <input type=reset value=Очистить style ="border-radius: 10px"></td>
+</table>
+</form>
+</div>
+</div>
+<br>
+<div id="footer">
+<br>
+<center>Контакты:<br>saverussianlanguage@gmail.com<br><a href="https://github.com/AnnaVechkaeva/RusDict"><font color="white">Проект на GitHub</font></a></center>
+</div>
+</body>
+</html>
