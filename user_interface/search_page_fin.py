@@ -21,8 +21,8 @@ def f_read(filename):
 
 #в программе не используется
 #использовалась при отладке
-def f_write(filename, text, encoding = 'utf-8-sig'):
-    f = open(filename, 'w', encoding = encoding)
+def f_write(text, encoding='utf-8'):
+    f = codecs.open('new.txt', 'a', encoding=encoding)
     f.write(text)
     f.close()
 
@@ -55,7 +55,6 @@ def dictionary(name=None):
     шаблон search.html
     или страницу с результатами - шаблон results.html,
     если был совершен запрос'''
-
     if request.method == 'POST':
         word = request.form['word']
         word1 = request.form['word_m']
@@ -70,7 +69,9 @@ def dictionary(name=None):
         cent1 = request.form.getlist('cent_1')
         cent2 = request.form.getlist('cent_2')
         word_te = request.form['word_te']
-        session['word_te'] = word_te
+        if word_te:
+            session = {}
+            session['word_te'] = word_te
         value_part_of_speech = request.form.getlist('part_of_speech')
         value_tran = request.form.getlist('tran')
         value_language = request.form.getlist('language')
@@ -79,21 +80,21 @@ def dictionary(name=None):
         cursor = connection.cursor()
         sql=""
         count = 0
-        if word != '':
+        if word:
             if count == 1:
                 sql += ' AND'
             if count == 0:
                 sql += ' WHERE'
                 count = 1
             sql = sql + " (Word1 IS '"+word+"' OR Word2 IS '"+word+"' OR Word1 LIKE '"+word+" %' OR Word2 LIKE '"+word+"%'OR Word1 LIKE '% "+word+"' OR Word2 LIKE '% "+word+"%')"
-        if word1 != '':
+        if word1:
             if count > 0:
                 sql += ' AND'
             else:
                 sql += ' WHERE'
                 count = 2
             sql = sql + " (Word1 LIKE '"+word1+"' OR Word2 LIKE '"+word1+"')"
-        if value_part_of_speech != []:
+        if value_part_of_speech:
             if count > 0:
                 sql += " AND ("
             else:
@@ -106,7 +107,7 @@ def dictionary(name=None):
                     sql += " OR Gram1 LIKE '%"+i+"%' OR Gram2 LIKE '%" + i + "%'"
             sql += ')'
         
-        if year1 != '':
+        if year1:
             if count > 0:
                 sql += " AND"
             if count == 0:
@@ -114,7 +115,8 @@ def dictionary(name=None):
             count = 5
             sql = sql + " date1 = "+year1+" AND date2 =" +year1
         
-        if word_te != '':
+        if word_te:
+            f_write(u'word_te srazu')
             if count > 0:
                 sql += " AND"
             if count == 0:
@@ -122,9 +124,12 @@ def dictionary(name=None):
             count = 6
 ##          в этом месте обычный поиск можно заменить на поиск по регулярным
 ##          выражениям, но нужно их сначала подключить  
-            sql = sql + " Full LIKE '%"+word_te+"%'"
+            sql = sql + " Full LIKE '%"
+            sql = sql + word_te
+            sql = sql + "%'"
+            f_write(u'word_te dict')
 ##            sql = sql + " Full REGEXP '\W"+word_te+"\W'"
-        if value_tran != []:
+        if value_tran:
             for i in value_tran:
                 if count > 0 and count != 7:
                     sql += " AND"
@@ -137,7 +142,7 @@ def dictionary(name=None):
                     sql += " Lang != ''"
                 if i == "off":
                     sql += " Lang = ''"
-        if value_language != []:
+        if value_language:
             for i in value_language:
                 if count > 0 and count != 8:
                     sql += " AND"
@@ -148,7 +153,7 @@ def dictionary(name=None):
                 count = 8
                 sql += " Lang LIKE '%" + i + "%'"
         
-        if value_genre != []:
+        if value_genre:
             arr1 = []
             for i in value_genre:
                 if i == "biblia_apokrify":
@@ -190,7 +195,7 @@ def dictionary(name=None):
                 sql += " " + j + " LIKE '%+%'"
             sql += ')'
         
-        if year1_1 != '' and year1_2 != '':
+        if year1_1 and year1_2:
             if count > 0:
                 sql += " AND ("
             if count == 0:
@@ -198,7 +203,7 @@ def dictionary(name=None):
             count = 10
             sql = sql + " (date1 <= "+year1_1+" AND date2 >=" +year1_1 +") OR (date1 <= "+year1_2+" AND date2 >=" +year1_2 +") OR (date1 >=" +year1_1+" AND date2 <= " +year1_2+")"
             sql += ')'
-        if cent1 != []:
+        if cent1:
             for i in cent1:
                 min_y = str(int(i)*100-100)
                 max_y = str(int(i)*100)
@@ -211,7 +216,7 @@ def dictionary(name=None):
                 count = 11
                 sql = sql + " date1 <= "+i+" AND date2 >=" +i+' OR (date1 >=' + min_y + " AND date2 <=" + max_y +')'
             sql += ')'
-        if cent2 != []:
+        if cent2:
             for i in cent2:
                 min_y = str(int(i)*100-100)
                 max_y = str(int(i)*100)
@@ -224,14 +229,14 @@ def dictionary(name=None):
                 count = 11
                 sql = sql + " date3 <= "+i+" AND date4 >=" +i +' OR (date3 >=' + min_y + " AND date4 <=" + max_y +')'
             sql += ')'
-        if year2 != '':
+        if year2:
             if count > 0:
                 sql += " AND"
             if count == 0:
                 sql += " WHERE"
             count = 12
             sql = sql + " date3 = "+year2+" AND date4 =" +year2
-        if year2_1 != '' and year2_2 != '':
+        if year2_1 and year2_2:
             if count > 0:
                 sql += " AND ("
             if count == 0:
@@ -239,13 +244,13 @@ def dictionary(name=None):
             count = 13
             sql = sql + " (date3 <= "+year2_1+" AND date4 >=" +year2_1 +") OR (date3 <= "+year2_2+" AND date4 >=" +year2_2 +") OR (date3 >=" +year2_1+" AND date4 <= " +year2_2+")"
             sql += ')'
-        if value_tran == [] and year1 == '' and value_language == [] and value_genre == [] and word_te == '' and year1_1 == '' and year1_2 == '' and cent1 == [] and year2_1 == '' and year2_2 == '' and year2 == '' and cent2 == []:
+        if not value_tran and not year1 and not value_language and not value_genre and not word_te and not year1_1 and not year1_2 and not cent1 and not year2_1 and not year2_2 and not year2 and not cent2:
             sql = "SELECT DISTINCT Words.Word1 FROM Words"+sql
         else:
             sql = "SELECT DISTINCT Words.Word1 FROM "+\
                   "((Words JOIN Meanings ON Meanings.IDword=Words.Id) "+\
                   "JOIN Examples ON Meanings.Id = Examples.meaningID) "+\
-                  "JOIN Sources ON Sources.Id = Examples.source"+sql          
+                  "JOIN Sources ON Sources.Id = Examples.source"+sql
         cursor.execute(sql)
         t = cursor.fetchall()
         return render_template('results.html', name = name, lemmas = t)
@@ -288,6 +293,7 @@ def word_entry(word):
     ареса "сайт/results/СЛОВО" (лемма пишется капсом)'''
     
     connection = sqlite.connect('RusDict.db')
+ 
     wordData = "SELECT Id, Word1, Gram1, Word2, Gram2 FROM Words "+\
           "WHERE Word1=?"
     wordData = db_query(connection, wordData, word)
@@ -302,10 +308,11 @@ def word_entry(word):
         meaningId = meaningTuple[0]
         meaning = meaningTuple[1]
         examples = "SELECT example FROM Examples WHERE meaningID=?"
+
         examples = db_query(connection, examples, meaningId)
         d = {}
         d['meaning'] = meaning
-        if not session['word_te'] == '':
+        if 'word_te' in session:
             examplesHighlighted = []
             for example in examples:
                 example = highlight_a_word_in_example(example[0],

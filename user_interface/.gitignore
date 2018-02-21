@@ -1,3 +1,5 @@
-*.db
 try.py
 .idea
+log.txt
+*.save*
+*.pyc
