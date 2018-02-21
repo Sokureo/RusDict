@@ -32,14 +32,14 @@
 Всего найдено {{lemmas|length}} вхождений.
 </div>
 <br/>
-{% for i in range(1, lemmas|length) %}
-<div id="up"><b><a href="results/{{ lemmas[i][0] }}">{{ i }}. {{ lemmas[i][0] }}</a></b></div>{# в массиве lemmas каждая лемма лежит в собственном массиве (так выдает БД) #}
+{% for i in range(0, lemmas|length) %}
+<div id="up"><b><a href="results/{{ lemmas[i][0] }}">{{ i+1}}. {{ lemmas[i][0] }}</a></b></div>{# в массиве lemmas каждая лемма лежит в собственном массиве (так выдает БД) #}
 {% endfor %}
 </div>
 </div>
 <div id="footer">
 <br>
-<center>Контакты:<br>saverussianlanguage@gmail.com<br><a href="https://github.com/AnnaVechkaeva/RusDict"><font color="white">Проект на GitHub</font></a></center>
+<center>Контакты:<br>saverussianlanguage@gmail.com<br><a href="https://github.com/Sokureo/RusDict"><font color="white">Проект на GitHub</font></a></center>
 </div>
 </body>
 </html>
