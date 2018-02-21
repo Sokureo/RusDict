@@ -22,7 +22,7 @@ def f_read(filename):
 #в программе не используется
 #использовалась при отладке
 def f_write(text, encoding='utf-8'):
-    f = codecs.open('new.txt', 'a', encoding=encoding)
+    f = codecs.open('log.txt', 'a', encoding=encoding)
     f.write(text)
     f.close()
 
@@ -116,7 +116,6 @@ def dictionary(name=None):
             sql = sql + " date1 = "+year1+" AND date2 =" +year1
         
         if word_te:
-            f_write(u'word_te srazu')
             if count > 0:
                 sql += " AND"
             if count == 0:
@@ -127,7 +126,6 @@ def dictionary(name=None):
             sql = sql + " Full LIKE '%"
             sql = sql + word_te
             sql = sql + "%'"
-            f_write(u'word_te dict')
 ##            sql = sql + " Full REGEXP '\W"+word_te+"\W'"
         if value_tran:
             for i in value_tran:
